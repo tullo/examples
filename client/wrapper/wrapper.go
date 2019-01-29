@@ -9,6 +9,7 @@ import (
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/cmd"
 	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/registry"
 )
 
 // wrapper example code
@@ -47,10 +48,10 @@ func traceWrap(c client.Client) client.Client {
 }
 
 func metricsWrap(cf client.CallFunc) client.CallFunc {
-	return func(ctx context.Context, addr string, req client.Request, rsp interface{}, opts client.CallOptions) error {
+	return func(ctx context.Context, node *registry.Node, req client.Request, rsp interface{}, opts client.CallOptions) error {
 		t := time.Now()
-		err := cf(ctx, addr, req, rsp, opts)
-		fmt.Printf("[Metrics Wrapper] called: %s %s.%s duration: %v\n", addr, req.Service(), req.Endpoint(), time.Since(t))
+		err := cf(ctx, node, req, rsp, opts)
+		fmt.Printf("[Metrics Wrapper] called: %v %s.%s duration: %v\n", node, req.Service(), req.Endpoint(), time.Since(t))
 		return err
 	}
 }
