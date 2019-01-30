@@ -102,3 +102,6 @@ go get github.com/micro/protoc-gen-micro
 protoc --proto_path=$GOPATH/src:. --micro_out=. --go_out=. path/to/proto
 ```
 
+## Chinese language version
+
+Our examples also has Chinese language version, see [Chinese](https://github.com/micro/examples/tree/cn-lang)
