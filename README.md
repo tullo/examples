@@ -1,18 +1,43 @@
-# Micro Examples  [![Travis CI](https://travis-ci.org/micro/examples.svg?branch=master)](https://travis-ci.org/micro/examples) [![Go Report Card](https://goreportcard.com/badge/micro/examples)](https://goreportcard.com/report/github.com/micro/examples)
+# Micro 示例  [![Travis CI](https://travis-ci.org/micro/examples.svg?branch=master)](https://travis-ci.org/micro/examples) [![Go Report Card](https://goreportcard.com/badge/micro/examples)](https://goreportcard.com/report/github.com/micro/examples)
 
-This is a repository for micro examples. Feel free to contribute.
+这里包含有micro大部分功能的示例，如果您有例子可以贡献，可以提交上来。
 
-## Contents
+由于英文版的示例大多过于简单，中文版的某些示例可能会进行加强。
 
-Most likely needed examples
+## 中文分支
 
-- [service](service) - A sample micro service
-- [greeter](greeter) - A complete greeter example
-- [booking](booking) - A demo end to end application
+由于默认分支是英文的，为了让大家方便使用中文分支的代码和文档，大家在下载本仓库后，需要切换分支
 
-### Other
+- 先检测中文分支是否存在
 
-- [api](api) - Provides API usage examples
+```bash
+$ git branch
+* cn-lang  # 如果有cn-lang则代表拉取的仓库中包含了中文分支
+  master
+
+# 如果当前不在cn-lang分支上，即cn-lang前没有*号，则使用下面的命令
+$ git checkout cn-lang 
+```
+
+- 如果没有，则从远端分支中签出
+
+```bash
+$ git checkout origin/branch
+```
+
+## 内容
+
+大部分例子都依赖下面三个示例
+
+- [service](service) - 简单实现的micro服务端
+- [greeter](greeter) - 包含有完整（客户端、服务端、web、api）功能的Greeter问候服务示例
+- [booking](booking) - 端到端应用示例
+
+### 其它示例
+
+下例示例持续翻译中并进行适当演译
+
+- [api](api) - [API](https://micro.mu/docs/api_cn.html)使用示例
 - [booking](booking) - A booking.com demo application
 - [broker](broker) - A example of using Broker for Publish and Subscribing.
 - [client](client) - Usage of the Client package to call a service.
@@ -34,7 +59,7 @@ Most likely needed examples
 - [options](options) - Setting options in the go-micro framework
 - [plugins](plugins) - How to use plugins
 - [pubsub](pubsub) - Example of using pubsub at the client/server level
-- [grpc](grpc) - Examples of how to use [go-grpc](https://github.com/micro/go-grpc)
+- [grpc](grpc) - 示例如何使用[go-grpc](https://github.com/micro/go-grpc)
 - [redirect](redirect) - An example of how to http redirect using an API service
 - [roundrobin](roundrobin) - A stateful client wrapper for true round robin of requests
 - [secure](secure) - Demonstrates use of transport secure option for self signed certs
@@ -45,9 +70,9 @@ Most likely needed examples
 - [stream](stream) - An example of a streaming service and client
 - [template](template) - Api, web and srv service templates generated with the 'micro new' command
 - [waitgroup](waitgroup) - Demonstrates how to use a waitgroup with a service
-- [wrapper](wrapper) - A simple example of using a log wrapper
+- [wrapper](wrapper) - 包装器示例，本例中包含有一个使用日志包含器的示例
 
-## Community
+## 社区
 
 Find contributions from the community via the [explorer](https://micro.mu/explore/)
 
@@ -55,18 +80,23 @@ Find contributions from the community via the [explorer](https://micro.mu/explor
 - [shippy](https://github.com/EwanValentine/shippy) - A multi app demo and tutorial
 - [microhq](https://github.com/microhq) - A place for micro services
 
-## Dependencies
+## 依赖
 
-- [Service Discovery](#service-discovery)
-- [Protobuf](#protobuf)
+- [Service Discovery](#service-discovery) 服务发现
+- [Protobuf](#protobuf) protobuf工具
 
-## Service Discovery
+## 服务发现
 
-All services require service discovery. The default is multicast DNS, a zeroconf system.
+所有的服务都需要服务发现，默认使用组播（mDNS，multicast DNS），因为组播不需要任务配置或注册中心服务。
 
-If you need something multi-host or more resilient use consul.
+如果在多台主机上试验或者想做得有弹性一些，那就使用consul。
 
 ### Consul
+
+
+### 安装
+
+这是mac下的安装方法，其它平台请参考[consul](https://www.consul.io/)
 
 ```
 # install
@@ -76,29 +106,42 @@ brew install consul
 consul agent -dev
 ```
 
-Use flag `--registry=consul` to enable the consul registry.
+启动时使用`--registry=consul`标记指令便会激活使用consul。
+
+例如：
+
+```bash
+service --registry=consul
+```
 
 ## Protobuf
 
-Protobuf is used for code generation of message types and client/hander stubs.
+Protobuf用来生成服务与客户端消息类型与方法存根的协议。
 
-If making changes recompile the protos.
+需要注意是，proto原型文件有改动需要重新编译。
 
-### Install
+### 安装
 
-Install [protoc](https://github.com/google/protobuf) for your environment. Then:
+protoc对不同的操作系统有不同要求，请参考[protoc](https://github.com/google/protobuf)安装。
+
+安装好后，因为我们要根据proto原型文件来生成对应golang版本源码文件，所以需要拉取protobuf的golang插件：
 
 ```shell
 go get github.com/golang/protobuf/{proto,protoc-gen-go}
 ```
 
+micro的protobuf插件，用来生成micro风格的client与server存根方法和结构。
+
 ```shell
 go get github.com/micro/protoc-gen-micro
 ```
 
-### Compile Proto
+### 编译proto文件
 
 ```shell
 protoc --proto_path=$GOPATH/src:. --micro_out=. --go_out=. path/to/proto
 ```
 
+## 译者信息
+
+[ShuXian](https://github.com/printfcoder/go-micro-examples-cn)
